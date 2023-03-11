@@ -5,9 +5,9 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 const { getToken } = require('../../utils');
 
+//Register user
 const register = async (req, res, next) => {
   try {
-    console.log('Req body:', req.body);
     const payload = req.body;
     let user = new User(payload);
     await user.save();
@@ -24,6 +24,7 @@ const register = async (req, res, next) => {
   }
 };
 
+//verifikasi login pengguna dengan cara mencocokkan email dan password
 const localStrategy = async (email, password, done) => {
   try {
     let user = await User.findOne({ email }).select('-__v -createdAt -updateAt -cart_items -token');
@@ -38,6 +39,7 @@ const localStrategy = async (email, password, done) => {
   done();
 };
 
+//Login user
 const login = async (req, res, next) => {
   passport.authenticate('local', async function (err, user) {
     if (err) return next(err);
@@ -56,6 +58,7 @@ const login = async (req, res, next) => {
   })(req, res, next);
 };
 
+//Logout user
 const logout = async (req, res, next) => {
   let token = getToken(req);
 
@@ -74,6 +77,7 @@ const logout = async (req, res, next) => {
   });
 };
 
+//Melihat informasi tentang pengguna yang sedang login
 const me = (req, res, next) => {
   if (!req.user) {
     res.json({
