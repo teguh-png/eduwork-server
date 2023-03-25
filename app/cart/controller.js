@@ -14,7 +14,7 @@ const update = async (req, res, next) => {
         image_url: relatedProduct.image_url,
         name: relatedProduct.name,
         user: req.user._id,
-        quantity: item.qty,
+        qty: item.qty,
       };
     });
 
